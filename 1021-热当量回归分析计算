@@ -1,0 +1,33 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+int main(){
+	int n;
+	double t[100],y[100],x[100],tx=0,ty=0,tx2=0,txy=0;
+	const double t0=21.69/*环境温度*/,v=40.14/*电压平均值*/,
+	             cm=4.18*166.85+132.95*0.389+64.38/*总CM乘积*/,r=200.8/*电热器电阻*/; 
+	cin>>n;
+	for(int i=0;i<n;i++)
+		cin>>t[i];
+	for(int i=1;i<n;i++)
+	{
+		y[i]=(t[i]-t[i-1])/(60.0);/*时间间隔60秒*/
+		x[i]=(t[i]+t[i-1])/2-t0;
+		tx+=x[i]; 
+		ty+=y[i];
+		tx2+=x[i]*x[i]; 
+		txy+=x[i]*y[i];
+	}
+	tx=tx/(n-1.0);
+	ty=ty/(n-1.0);
+	txy=txy/(n-1.0);
+	tx2=tx2/(n-1.0);
+	double b=(tx*ty-txy)/(tx*tx-tx2),a=ty-b*tx;
+	cout<<"x="<<tx<<" y="<<ty<<" xy="<<txy<<" x2="<<tx2<<endl; 
+	cout<<"b="<<b<<" a="<<a<<endl;
+	double j=(v*v)/(a*r*cm);
+	cout<<j<<endl;
+	return 0;
+}
